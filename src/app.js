@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { Musician } = require("../models/index")
+const { Musician, Band } = require("../models/index")
 const { db } = require("../db/connection");
 const { json } = require("sequelize");
 
@@ -25,6 +25,11 @@ app.get("/musicians/2", async (req, res) => {
 app.get("/musicians/3", async (req, res) => {
     const musician = await Musician.findByPk(3);
     res.json(musician);
+});
+
+app.get("/bands", async (req, res) => {
+    const bands = await Band.findAll();
+    res.json(bands);
 });
 
 module.exports = app;
