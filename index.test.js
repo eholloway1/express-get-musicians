@@ -113,3 +113,31 @@ describe("Testing ./bands endpoiont", () => {
     });
 
 });
+
+describe("Testing .musician post/put/delete", () => {
+
+    it("testing musician post", async () => {
+        await request(app).post("/musicians").send({ name: "SZA", instrument: "Voice" });
+        const resposne = await request(app).get("/musicians/4");
+        const responseData = JSON.parse(resposne.text);
+        expect(responseData.id).toBe(4);
+        expect(responseData.name).toBe("SZA");
+        expect(responseData.instrument).toBe("Voice");
+    });
+
+    it("testing musician put", async () => {
+        await request(app).put("/musicians/4").send({ name: "RZA", instrument: "Computer" });
+        const response = await request(app).get("/musicians/4");
+        const responseData = JSON.parse(response.text);
+        expect(responseData.id).toBe(4);
+        expect(responseData.name).toBe("RZA");
+        expect(responseData.instrument).toBe("Computer");
+    });
+
+    it("testing musician delete", async () => {
+        await request(app).delete("/musicians/4")
+        const response = await request(app).get("/musicians");
+        const responseData = JSON.parse(response.text);
+        expect(responseData[3]).toBeNull;
+    });
+});
